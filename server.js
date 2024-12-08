@@ -5,6 +5,7 @@ const connectDb = require("./config/db");
 const authRoutes = require("./routes/auth");
 const errorHandler = require("./middlewares/error");
 const sellerRoute = require("./routes/seller");
+const cors = require("cors");
 
 const productRoutes = require("./routes/product");
 const bankRoutes = require("./routes/bank");
@@ -13,6 +14,15 @@ const bankRoutes = require("./routes/bank");
 const app = express();
 
 // middlewares
+const corsOptions = {
+  origin: "*", // Allows all origins
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+// Middleware
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -31,4 +41,8 @@ connectDb();
 
 app.listen(5000, () => {
   console.log("Server Ready");
+});
+
+app.get("/", (req, res) => {
+  res.send("welcome to oga property server");
 });

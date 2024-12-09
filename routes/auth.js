@@ -9,6 +9,7 @@ const {
   getUser,
   editProfile,
   updateProfilePic,
+  deleteAllUsers,
 } = require("../controllers/auth");
 const { protect } = require("../middlewares/authMIddleware");
 
@@ -22,5 +23,6 @@ authRoutes.put("/image", protect, upload.single("image"), updateProfilePic);
 authRoutes.post("/verify-otp", verifyOtp);
 authRoutes.post("/resend-otp", requestOtp);
 authRoutes.post("/create-password", createPassword);
+authRoutes.delete("/", deleteAllUsers);
 
 module.exports = authRoutes;

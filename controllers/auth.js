@@ -229,7 +229,7 @@ const getUser = asyncHandler(async (req, res) => {
 });
 
 const editProfile = asyncHandler(async (req, res) => {
-  const { email, name, password } = req.body;
+  const { email, name, password, phone } = req.body;
   const userId = req.user._id;
 
   // Check if the user is authenticated
@@ -262,6 +262,9 @@ const editProfile = asyncHandler(async (req, res) => {
     user.name = name;
   }
 
+  if (phone) {
+    user.phone = phone;
+  }
   if (password) {
     const hashedPassword = await hash(password, 10);
     user.password = hashedPassword;
@@ -276,6 +279,7 @@ const editProfile = asyncHandler(async (req, res) => {
       id: user._id,
       email: user.email,
       name: user.name,
+      phone: user.phone,
     },
   });
 });
@@ -333,6 +337,24 @@ const updateProfilePic = asyncHandler(async (req, res) => {
   }
 });
 
+const deleteAllUsers = asyncHandler(async (req, res) => {
+  try {
+    // Perform the delete operation
+    await User.deleteMany({});
+
+    // Respond with a success message
+    return res.status(200).json({
+      message: "All users have been successfully deleted",
+    });
+  } catch (error) {
+    // Log and handle errors
+    console.error("Error deleting all users:", error);
+    return res.status(500).json({
+      message: "An error occurred while deleting users",
+    });
+  }
+});
+
 module.exports = {
   registerUser,
   verifyOtp,
@@ -342,4 +364,5 @@ module.exports = {
   editProfile,
   updateProfilePic,
   getUser,
+  deleteAllUsers,
 };
